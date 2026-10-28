@@ -1,0 +1,9 @@
+torch
+torchvision
+opencv-python
+numpy
+pytest
+flake8
+black
+fastapi
+uvicorn

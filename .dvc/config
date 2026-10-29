@@ -1,4 +1,4 @@
 [core]
-    remote = gdrive-remote
-['remote "gdrive-remote"']
-    url = gdrive://1ZruS2WMccP0sOI1FAAt0SvAOnJlhDlHI
+    remote = origin
+['remote "origin"']
+    url = https://dagshub.com/anupam19092003/anomaly-detection.dvc

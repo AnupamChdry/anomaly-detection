@@ -12,8 +12,6 @@ env/
 .ipynb_checkpoints/
 
 # Data (tracked via DVC later, not raw in git)
-data/*
-!data/.gitkeep
 
 # MLflow
 mlruns/

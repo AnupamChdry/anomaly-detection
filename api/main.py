@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-app = FastAPI(title="Anomaly Detection API")
+app=FastAPI(title="Anomaly Detection API")
 
 
 @app.get("/")

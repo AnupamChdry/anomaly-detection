@@ -1,4 +1,3 @@
-import os
 import cv2
 import numpy as np
 from pathlib import Path
@@ -43,7 +42,9 @@ def process_image(input_path: Path, output_path: Path) -> None:
     save_image(image, output_path)
 
 
-def process_dataset(raw_dir: Path = RAW_DATA_DIR, processed_dir: Path = PROCESSED_DATA_DIR) -> None:
+def process_dataset(
+    raw_dir: Path = RAW_DATA_DIR, processed_dir: Path = PROCESSED_DATA_DIR
+) -> None:
     """Walk through raw dataset, process every image, mirror folder structure."""
     image_extensions = {".png", ".jpg", ".jpeg"}
 

@@ -8,3 +8,5 @@ black
 fastapi
 uvicorn
 httpx
+dvc
+dvc[gdrive]

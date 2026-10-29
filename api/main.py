@@ -7,6 +7,7 @@ app = FastAPI(title="Anomaly Detection API")
 def health_check():
     return {"status": "ok"}
 
+
 @app.get("/info")
 def info():
     """Returns basic metadata about the API."""

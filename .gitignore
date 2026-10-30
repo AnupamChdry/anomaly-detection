@@ -20,6 +20,19 @@ mlflow.db
 # Environment/secrets
 .env
 *.env
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets.*
+
+# DVC local-only files (credentials, cache, temp) - never commit
+.dvc/config.local
+.dvc/cache/
+.dvc/tmp/
+
+# Local virtualenv
+anomaly-env/
 
 # OS
 .DS_Store

@@ -14,6 +14,7 @@ def get_datamodule(category: str, batch_size: int = 32) -> MVTecAD:
         category=category,
         train_batch_size=batch_size,
         eval_batch_size=batch_size,
+        num_workers=0,
     )
     datamodule.setup()
     return datamodule

@@ -7,8 +7,6 @@ from anomalib.models import Stfpm
 
 from src.training.datamodule import get_datamodule
 
-import torch
-
 torch.set_float32_matmul_precision("high")
 
 RESULTS_DIR = Path("results/stfpm")

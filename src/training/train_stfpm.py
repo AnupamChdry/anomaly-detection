@@ -29,15 +29,15 @@ def train_stfpm(category: str, max_epochs: int = 50):
     )
 
     with mlflow.start_run(run_name=f"STFPM_{category}"):
-            mlflow.log_param("model", "STFPM")
-            mlflow.log_param("category", category)
-    
-            engine.fit(model=model, datamodule=datamodule)
-            test_results = engine.test(model=model, datamodule=datamodule)
-    
-            if test_results:
-                for key, value in test_results[0].items():
-                    mlflow.log_metric(key, value)
+        mlflow.log_param("model", "STFPM")
+        mlflow.log_param("category", category)
+
+        engine.fit(model=model, datamodule=datamodule)
+        test_results = engine.test(model=model, datamodule=datamodule)
+
+        if test_results:
+            for key, value in test_results[0].items():
+                mlflow.log_metric(key, value)
 
     return test_results
 

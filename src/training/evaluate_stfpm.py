@@ -19,7 +19,9 @@ def find_latest_checkpoint(category: str) -> Path:
     )
 
     if not version_dirs:
-        raise FileNotFoundError(f"No version folders found for {category} in {category_dir}")
+        raise FileNotFoundError(
+            f"No version folders found for {category} in {category_dir}"
+        )
 
     latest_version_dir = version_dirs[-1]
     checkpoint_path = latest_version_dir / "weights" / "lightning" / "model.ckpt"

@@ -3,24 +3,24 @@
     {
       "image_AUROC": 1.0,
       "image_F1Score": 0.9919999837875366,
-      "pixel_AUROC": 0.985609769821167,
-      "pixel_F1Score": 0.7268849611282349
+      "pixel_AUROC": 0.9855812191963196,
+      "pixel_F1Score": 0.7262998223304749
     }
   ],
   "screw": [
     {
-      "image_AUROC": 0.9602377414703369,
-      "image_F1Score": 0.9512194991111755,
-      "pixel_AUROC": 0.9884594082832336,
-      "pixel_F1Score": 0.3713090121746063
+      "image_AUROC": 0.9604427814483643,
+      "image_F1Score": 0.9469387531280518,
+      "pixel_AUROC": 0.9898987412452698,
+      "pixel_F1Score": 0.36981356143951416
     }
   ],
   "cable": [
     {
-      "image_AUROC": 0.9870690107345581,
-      "image_F1Score": 0.967391312122345,
-      "pixel_AUROC": 0.9853308200836182,
-      "pixel_F1Score": 0.6417911052703857
+      "image_AUROC": 0.9851948618888855,
+      "image_F1Score": 0.9621621370315552,
+      "pixel_AUROC": 0.9847615361213684,
+      "pixel_F1Score": 0.6400876045227051
     }
   ]
 }

@@ -4,6 +4,9 @@ from pathlib import Path
 import torch
 from anomalib.engine import Engine
 from anomalib.models import Stfpm
+import mlflow
+
+from src.training.mlflow_utils import setup_mlflow
 
 from src.training.datamodule import get_datamodule
 
@@ -25,13 +28,22 @@ def train_stfpm(category: str, max_epochs: int = 50):
         num_sanity_val_steps=0,
     )
 
-    engine.fit(model=model, datamodule=datamodule)
-    test_results = engine.test(model=model, datamodule=datamodule)
+    with mlflow.start_run(run_name=f"STFPM_{category}"):
+            mlflow.log_param("model", "STFPM")
+            mlflow.log_param("category", category)
+    
+            engine.fit(model=model, datamodule=datamodule)
+            test_results = engine.test(model=model, datamodule=datamodule)
+    
+            if test_results:
+                for key, value in test_results[0].items():
+                    mlflow.log_metric(key, value)
 
     return test_results
 
 
 if __name__ == "__main__":
+    setup_mlflow("STFPM-anomaly-detection")
     categories = ["bottle", "screw", "cable"]
     all_results = {}
 

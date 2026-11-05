@@ -7,10 +7,12 @@ from anomalib.models import Stfpm
 
 from src.training.datamodule import get_datamodule
 
+torch.set_float32_matmul_precision("high")
+
 RESULTS_DIR = Path("results/stfpm")
 
 
-def train_stfpm(category: str, max_epochs: int = 100):
+def train_stfpm(category: str, max_epochs: int = 50):
     """Train and evaluate STFPM on a given MVTec AD category."""
     datamodule = get_datamodule(category)
     model = Stfpm()

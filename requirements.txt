@@ -10,3 +10,5 @@ uvicorn
 httpx
 dvc
 anomalib
+mlflow
+python-dotenv

@@ -1,9 +1,10 @@
 from pathlib import Path
-import torch
 
 from anomalib.engine import Engine
 from anomalib.models import Patchcore
+import mlflow
 
+from src.training.mlflow_utils import setup_mlflow
 from src.training.datamodule import get_datamodule
 
 RESULTS_DIR = Path("results/patchcore")
@@ -16,17 +17,24 @@ def train_patchcore(category: str):
 
     engine = Engine(
         default_root_dir=str(RESULTS_DIR / category),
-        accelerator="gpu" if torch.cuda.is_available() else "cpu",
-        devices=1,
     )
 
-    engine.fit(model=model, datamodule=datamodule)
-    test_results = engine.test(model=model, datamodule=datamodule)
+    with mlflow.start_run(run_name=f"patchcore_{category}"):
+        mlflow.log_param("model", "PatchCore")
+        mlflow.log_param("category", category)
+
+        engine.fit(model=model, datamodule=datamodule)
+        test_results = engine.test(model=model, datamodule=datamodule)
+
+        if test_results:
+            for key, value in test_results[0].items():
+                mlflow.log_metric(key, value)
 
     return test_results
 
 
 if __name__ == "__main__":
+    setup_mlflow("patchcore-anomaly-detection")
     categories = ["bottle", "screw", "cable"]
     all_results = {}
 

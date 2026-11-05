@@ -1,6 +1,8 @@
 import pytest
 from src.training.datamodule import get_datamodule, CATEGORIES
 
+pytestmark = pytest.mark.integration
+
 
 @pytest.mark.parametrize("category", CATEGORIES)
 def test_datamodule_loads(category):

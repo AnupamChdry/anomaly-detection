@@ -6,3 +6,20 @@ stages:
     - src/preprocessing/preprocess.py
     outs:
     - data/processed
+
+  train_patchcore:
+    cmd: python -m src.training.train_patchcore
+    deps:
+    - data/raw
+    - src/training/datamodule.py
+    - src/training/train_patchcore.py
+    outs:
+    - results/patchcore_summary.json
+  train_stfpm:
+    cmd: python -m src.training.train_stfpm
+    deps:
+    - data/raw
+    - src/training/datamodule.py
+    - src/training/train_stfpm.py
+    outs:
+    - results/stfpm_summary.json

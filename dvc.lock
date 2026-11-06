@@ -18,3 +18,45 @@ stages:
       md5: d2e1ee6a7b644b9f3f59777bf557681d.dir
       size: 107516811
       nfiles: 1420
+  train_patchcore:
+    cmd: python -m src.training.train_patchcore
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 3c5aa8d56b2b3013c3410cd76275aae9.dir
+      size: 857729538
+      nfiles: 1426
+    - path: src/training/datamodule.py
+      hash: md5
+      md5: e2e473e37a18232cd2fc9f96ee6d2a15
+      size: 795
+    - path: src/training/train_patchcore.py
+      hash: md5
+      md5: 6ef6ba5cccc7aacd8cc7192413400428
+      size: 1692
+    outs:
+    - path: results/patchcore_summary.json
+      hash: md5
+      md5: 414697b566efd5b779163fc19eb3d633
+      size: 605
+  train_stfpm:
+    cmd: python -m src.training.train_stfpm
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 3c5aa8d56b2b3013c3410cd76275aae9.dir
+      size: 857729538
+      nfiles: 1426
+    - path: src/training/datamodule.py
+      hash: md5
+      md5: e2e473e37a18232cd2fc9f96ee6d2a15
+      size: 795
+    - path: src/training/train_stfpm.py
+      hash: md5
+      md5: b43d64c41fdb44fae6fbf94d1e48a19a
+      size: 1849
+    outs:
+    - path: results/stfpm_summary.json
+      hash: md5
+      md5: 3db9bda30b74c316e058a51f2a1ad76a
+      size: 621

@@ -4,14 +4,14 @@ End-to-end MLOps pipeline for visual anomaly detection on industrial images
 (MVTec AD dataset), covering data versioning, experiment tracking, CI/CD,
 cloud deployment, and drift monitoring.
 
-## Status: Week 2 Complete ✅ — Data Versioning Pipeline
+## Status: Week 3 Complete ✅ — Model Training & Experiment Tracking
 
 ## Tech Stack
 - Data versioning: DVC (remote: DagsHub)
-- Experiment tracking: MLflow (upcoming)
-- Model: CNN / Autoencoder (PyTorch)
+- Experiment tracking: MLflow (hosted via DagsHub)
+- Models: PatchCore & STFPM (via Anomalib, PyTorch backend)
 - API: FastAPI
-- Containerization: Docker
+- Containerization: Docker (with GitHub Actions layer caching)
 - CI/CD: GitHub Actions
 - Cloud: GCP (upcoming)
 - Monitoring: Evidently AI (upcoming)
@@ -20,19 +20,39 @@ cloud deployment, and drift monitoring.
 [MVTec AD](https://www.mvtec.com/company/research/datasets/mvtec-ad) —
 using 3 categories: `bottle`, `screw`, `cable`.
 
+## Model Comparison
+
+Two state-of-the-art anomaly detection approaches were trained and evaluated
+on all 3 categories, tracked via MLflow:
+
+| Model | Category | Image AUROC | Pixel AUROC |
+|-------|----------|-------------|-------------|
+| PatchCore | bottle | 1.000 | 0.992 |
+| PatchCore | screw  | 0.960 | 0.990 |
+| PatchCore | cable  | 0.985 | 0.985 |
+| STFPM     | bottle | 0.950 | 0.931 |
+| STFPM     | screw  | 0.855 | 0.969 |
+| STFPM     | cable  | 0.821 | 0.931 |
+
+**Key finding**: PatchCore (memory-bank based) consistently outperformed
+STFPM (student-teacher based) across all categories, particularly on
+structurally complex categories like `cable` — consistent with published
+benchmarks on MVTec AD.
+
 ## Project Structure
 \`\`\`
-├── data/                   # DVC-tracked (raw + processed), not in Git directly
+├── data/                   # DVC-tracked (raw), not in git directly
 ├── src/
 │   ├── preprocessing/      # OpenCV-based image preprocessing
-│   ├── training/           # Model training (upcoming - Week 3)
+│   ├── training/           # PatchCore & STFPM training/evaluation + MLflow
 │   ├── inference/          # Inference logic (upcoming)
 │   └── monitoring/         # Drift detection (upcoming - Week 7)
 ├── api/                    # FastAPI serving app
-├── tests/                  # Unit tests
-├── dvc.yaml                # DVC pipeline definition
+├── tests/                  # Unit + integration tests
+├── results/                # DVC-tracked model outputs/summaries
+├── dvc.yaml                # Full pipeline: preprocess + both training stages
 ├── dvc.lock                # DVC pipeline state (auto-generated)
-└── .github/workflows/      # CI: lint, test, docker-build
+└── .github/workflows/      # CI: lint, test, docker-build (with caching)
 \`\`\`
 
 ## Setup
@@ -42,7 +62,7 @@ using 3 categories: `bottle`, `screw`, `cable`.
 git clone https://github.com/AnupamChdry/anomaly-detection-mlops.git
 cd anomaly-detection-mlops
 python -m venv venv
-source venv/Scripts/activate   # or venv/bin/activate on Mac/Linux
+source venv/Scripts/activate
 pip install -r requirements.txt
 \`\`\`
 
@@ -53,26 +73,34 @@ dvc remote modify origin --local user <your-dagshub-username>
 dvc remote modify origin --local password <your-dagshub-token>
 \`\`\`
 
-### 3. Pull versioned data
+### 3. Configure MLflow tracking (.env file)
+\`\`\`
+MLFLOW_TRACKING_URI=https://dagshub.com/<username>/<repo>.mlflow
+MLFLOW_TRACKING_USERNAME=<username>
+MLFLOW_TRACKING_PASSWORD=<token>
+\`\`\`
+
+### 4. Pull versioned data
 \`\`\`bash
 dvc pull
 \`\`\`
 
-### 4. Reproduce the preprocessing pipeline
+### 5. Reproduce the full pipeline
 \`\`\`bash
 dvc repro
 \`\`\`
 
-## Data Pipeline
+## Pipeline Architecture
 
 \`\`\`mermaid
 flowchart LR
-    A[data/raw - MVTec AD] --> B[preprocess.py
-    resize + normalize]
+    A[data/raw - MVTec AD] --> B[preprocess]
     B --> C[data/processed]
+    A --> D[train_patchcore]
+    A --> E[train_stfpm]
+    D --> F[MLflow: patchcore results]
+    E --> G[MLflow: stfpm results]
 \`\`\`
-
-Defined in \`dvc.yaml\`, tracked via DVC, stored remotely on DagsHub.
 
 ## Run API locally
 \`\`\`bash
@@ -88,11 +116,4 @@ docker run -p 8000:8000 anomaly-detection-app
 
 ## Testing
 \`\`\`bash
-pytest tests/ -v
-\`\`\`
-
-## CI/CD
-This repo uses GitHub Actions for:
-- Linting (flake8, black)
-- Automated testing (pytest)
-- Docker build verification
+pytest tests/ -v -m "not integrat▍

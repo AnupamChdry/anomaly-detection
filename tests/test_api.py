@@ -29,7 +29,6 @@ def test_predict_valid_image():
     assert "pred_score" in data
     assert "pred_label" in data
 
-
 @pytest.mark.integration
 def test_predict_invalid_category():
     with open("data/raw/bottle/test/good/000.png", "rb") as f:

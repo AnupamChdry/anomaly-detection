@@ -12,3 +12,4 @@ dvc
 anomalib
 mlflow
 python-dotenv
+python-multipart

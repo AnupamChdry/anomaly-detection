@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import numpy as np
 import torch
 from anomalib.models import Patchcore
 from PIL import Image

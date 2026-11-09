@@ -44,3 +44,5 @@ Thumbs.db
 
 #results
 results/
+!results/.placeholder
+!results/.placeholder/.gitkeep

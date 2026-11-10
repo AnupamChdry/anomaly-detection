@@ -35,6 +35,21 @@ stages:
       md5: 6ef6ba5cccc7aacd8cc7192413400428
       size: 1692
     outs:
+    - path: results/patchcore/bottle
+      hash: md5
+      md5: 29846d62b1649474d079b806685ec3e5.dir
+      size: 983041193
+      nfiles: 336
+    - path: results/patchcore/cable
+      hash: md5
+      md5: 8e136ed9e8023b077bc208112259a648.dir
+      size: 827322119
+      nfiles: 453
+    - path: results/patchcore/screw
+      hash: md5
+      md5: 72c9cc2c9d3dd82dadd5d157f3817061.dir
+      size: 966210785
+      nfiles: 483
     - path: results/patchcore_summary.json
       hash: md5
       md5: 414697b566efd5b779163fc19eb3d633
@@ -56,6 +71,21 @@ stages:
       md5: b43d64c41fdb44fae6fbf94d1e48a19a
       size: 1849
     outs:
+    - path: results/stfpm/bottle
+      hash: md5
+      md5: 0e6b646445945ab91f261fa3015003f5.dir
+      size: 371257202
+      nfiles: 589
+    - path: results/stfpm/cable
+      hash: md5
+      md5: cce98f5ebb036aff74b768f0d1fe0f3d.dir
+      size: 273623177
+      nfiles: 604
+    - path: results/stfpm/screw
+      hash: md5
+      md5: c11ec96959f42d2f3ad02401dba43d83.dir
+      size: 214496530
+      nfiles: 644
     - path: results/stfpm_summary.json
       hash: md5
       md5: 3db9bda30b74c316e058a51f2a1ad76a

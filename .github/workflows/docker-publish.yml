@@ -19,6 +19,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install DVC
+        run: pip install dvc
+
+      - name: Configure DVC remote credentials
+        env:
+          DAGSHUB_USER: ${{ secrets.DAGSHUB_USER }}
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+        run: |
+          dvc remote modify origin --local auth basic
+          dvc remote modify origin --local user "$DAGSHUB_USER"
+          dvc remote modify origin --local password "$DAGSHUB_TOKEN"
+
+      - name: Pull model checkpoints
+        run: |
+          dvc pull results/patchcore/bottle/Patchcore/MVTecAD/bottle/latest/weights
+          dvc pull results/patchcore/screw/Patchcore/MVTecAD/screw/latest/weights
+          dvc pull results/patchcore/cable/Patchcore/MVTecAD/cable/latest/weights
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 

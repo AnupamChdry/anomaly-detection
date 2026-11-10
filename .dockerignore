@@ -4,6 +4,7 @@
 data/
 results/*
 !results/patchcore
+!results/patchcore/**
 tests/
 notebooks/
 *.md

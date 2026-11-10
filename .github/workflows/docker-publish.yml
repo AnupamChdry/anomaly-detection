@@ -41,7 +41,8 @@ jobs:
           dvc pull results/patchcore/bottle/Patchcore/MVTecAD/bottle/latest/weights
           dvc pull results/patchcore/screw/Patchcore/MVTecAD/screw/latest/weights
           dvc pull results/patchcore/cable/Patchcore/MVTecAD/cable/latest/weights
-
+      - name: Debug - list results structure
+        run: find results -type f
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 

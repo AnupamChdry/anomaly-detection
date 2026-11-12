@@ -92,3 +92,19 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+      
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy anomaly-detection-api \
+            --image=${{ env.REGISTRY }}/${{ steps.lower.outputs.image_name }}:${{ steps.meta.outputs.version }} \
+            --region=asia-northeast1 \
+            --platform=managed \
+            --allow-unauthenticated
+          
+      - name: Debug meta outputs
+        run: |
+          echo "tags: ${{ steps.meta.outputs.tags }}"
+          echo "version: ${{ steps.meta.outputs.version }}"

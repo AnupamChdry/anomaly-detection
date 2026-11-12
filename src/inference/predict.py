@@ -11,13 +11,25 @@ CHECKPOINT_DIR = Path("results/patchcore")
 def find_latest_checkpoint(category: str) -> Path:
     """Find the most recent PatchCore checkpoint for a given category."""
     category_dir = CHECKPOINT_DIR / category / "Patchcore" / "MVTecAD" / category
+
+    # Prefer the 'latest' symlink/folder if it exists (used in CI/production)
+    latest_path = category_dir / "latest" / "weights" / "lightning" / "model.ckpt"
+    if latest_path.exists():
+        return latest_path
+
+    # Fall back to searching versioned folders (used in local training)
     version_dirs = sorted(
         [d for d in category_dir.glob("v*") if d.is_dir()],
         key=lambda d: int(d.name[1:]),
     )
     if not version_dirs:
         raise FileNotFoundError(f"No checkpoint found for category: {category}")
-    return version_dirs[-1] / "weights" / "lightning" / "model.ckpt"
+
+    checkpoint_path = version_dirs[-1] / "weights" / "lightning" / "model.ckpt"
+    if not checkpoint_path.exists():
+        raise FileNotFoundError(f"No checkpoint found at {checkpoint_path}")
+
+    return checkpoint_path
 
 
 def load_model(category: str) -> Patchcore:

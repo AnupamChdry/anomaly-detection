@@ -1,9 +1,14 @@
+import os
+
+
 import io
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from PIL import Image
 
 from src.inference.predict import load_model, predict
+
+MODEL_VERSION = os.getenv("MODEL_VERSION", "v1")
 
 app = FastAPI(title="Anomaly Detection API")
 
@@ -31,6 +36,7 @@ def info():
     return {
         "project": "Anomaly Detection MLOps Pipeline",
         "version": "0.1.0",
+        "model_version": MODEL_VERSION,
         "description": "API for serving anomaly detection predictions",
         "supported_categories": list(VALID_CATEGORIES),
     }

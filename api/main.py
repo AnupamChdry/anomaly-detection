@@ -35,7 +35,7 @@ def info():
     """Returns basic metadata about the API."""
     return {
         "project": "Anomaly Detection MLOps Pipeline",
-        "version": "0.1.0",
+        "version": "0.1.1",
         "model_version": MODEL_VERSION,
         "description": "API for serving anomaly detection predictions",
         "supported_categories": list(VALID_CATEGORIES),

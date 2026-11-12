@@ -1,6 +1,5 @@
 import os
 
-MODEL_VERSION = os.getenv("MODEL_VERSION", "v1")
 
 import io
 
@@ -8,6 +7,8 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from PIL import Image
 
 from src.inference.predict import load_model, predict
+
+MODEL_VERSION = os.getenv("MODEL_VERSION", "v1")
 
 app = FastAPI(title="Anomaly Detection API")
 

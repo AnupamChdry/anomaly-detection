@@ -1,6 +1,5 @@
 import os
-
-
+from src.monitoring.log_prediction import log_prediction
 import io
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -64,6 +63,17 @@ async def predict_endpoint(category: str, file: UploadFile = File(...)):
         raise HTTPException(
             status_code=404, detail=f"No trained model found for category '{category}'"
         )
+    try:
+        log_prediction(
+            category=category,
+            image=image,
+            filename=file.filename,
+            anomaly_score=result["pred_score"],
+            is_anomalous=result["pred_label"] == "anomalous",
+        )
+    except Exception as e:
+        # Logging must never break the actual prediction response
+        print(f"Warning: failed to log prediction for monitoring: {e}")
 
     return {
         "category": category,

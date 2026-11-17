@@ -29,3 +29,17 @@ stages:
     - results/stfpm/bottle
     - results/stfpm/screw
     - results/stfpm/cable
+  build_reference:
+    cmd: python -m src.monitoring.build_reference
+    deps:
+    - data/raw
+    - results/patchcore/bottle
+    - results/patchcore/cable
+    - results/patchcore/screw
+    - src/inference/predict.py
+    - src/monitoring/build_reference.py
+    - src/monitoring/image_stats.py
+    outs:
+    - results/monitoring/reference_bottle.csv
+    - results/monitoring/reference_cable.csv
+    - results/monitoring/reference_screw.csv

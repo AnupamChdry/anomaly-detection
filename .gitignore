@@ -43,6 +43,8 @@ Thumbs.db
 .idea/
 
 #results
-results/
+results/*
 !results/.placeholder
 !results/.placeholder/.gitkeep
+!results/monitoring/
+!results/monitoring/*.csv

@@ -24,4 +24,3 @@ def test_compute_image_stats_returns_expected_keys():
     assert result["image_sharpness"] >= 0
     assert result["image_width"] > 0
     assert result["image_height"] > 0
-    

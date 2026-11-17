@@ -14,3 +14,4 @@ mlflow
 python-dotenv
 python-multipart
 requests
+evidently

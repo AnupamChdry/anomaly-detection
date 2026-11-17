@@ -48,3 +48,4 @@ results/*
 !results/.placeholder/.gitkeep
 !results/monitoring/
 !results/monitoring/*.csv
+results/monitoring/predictions_log.csv

@@ -16,27 +16,24 @@ import cv2
 from PIL import Image
 
 
-def compute_image_stats(image_path: str) -> dict:
+def compute_image_stats_from_image(image: Image.Image) -> dict:
     """
-    Compute lightweight statistical summaries of an image.
+    Compute lightweight statistical summaries from an in-memory PIL image.
 
     Args:
-        image_path: path to an image file on disk.
+        image: a PIL Image object (any mode; will be converted to grayscale).
 
     Returns:
-        dict with keys: mean_brightness, std_brightness, sharpness,
-        width, height.
+        dict with keys: image_mean_brightness, image_std_brightness,
+        image_sharpness, image_width, image_height.
     """
-    # Load as grayscale for brightness/contrast/sharpness calculations
-    img_gray = Image.open(image_path).convert("L")
+    img_gray = image.convert("L")
     img_array = np.array(img_gray)
 
     width, height = img_gray.size
 
     mean_brightness = float(np.mean(img_array))
     std_brightness = float(np.std(img_array))
-
-    # Laplacian variance: higher = sharper/more in-focus, lower = blurrier
     sharpness = float(cv2.Laplacian(img_array, cv2.CV_64F).var())
 
     return {
@@ -46,3 +43,18 @@ def compute_image_stats(image_path: str) -> dict:
         "image_width": width,
         "image_height": height,
     }
+
+
+def compute_image_stats(image_path: str) -> dict:
+    """
+    Compute lightweight statistical summaries of an image from disk.
+
+    Args:
+        image_path: path to an image file on disk.
+
+    Returns:
+        dict with keys: image_mean_brightness, image_std_brightness,
+        image_sharpness, image_width, image_height.
+    """
+    image = Image.open(image_path).convert("RGB")
+    return compute_image_stats_from_image(image)

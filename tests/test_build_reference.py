@@ -25,4 +25,3 @@ def test_build_reference_for_bottle_creates_valid_csv():
     assert first_row["image_path"].startswith("bottle/")
     assert first_row["model_used"] == "patchcore"
     assert first_row["is_anomalous"] in ("True", "False")
-    

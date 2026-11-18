@@ -9,20 +9,20 @@ the main `anomaly-env`), due to a dependency conflict between
 evidently==0.4.25 and the newer numpy/pandas versions required by
 torch/anomalib. See src/monitoring/README.md for details.
 
-When run from the main test suite (anomaly-env), this test will be
-SKIPPED automatically via pytest.importorskip. To actually run it:
+When run from the main test suite (anomaly-env) or CI, this test is
+SKIPPED automatically. To actually run it:
 
     source monitoring-env/Scripts/activate
-    pytest tests/test_generate_report.py -v
+    python -m pytest tests/test_generate_report.py -v
     deactivate
 """
 
 import pytest
-from src.monitoring.generate_report import generate_report_for_category
 
-evidently = pytest.importorskip(
-    "evidently", reason="evidently is only installed in monitoring-env"
-)
+try:
+    from src.monitoring.generate_report import generate_report_for_category
+except ModuleNotFoundError as e:
+    pytest.skip(f"Skipping drift report tests: {e}", allow_module_level=True)
 
 
 @pytest.mark.integration

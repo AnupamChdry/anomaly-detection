@@ -24,6 +24,7 @@ evidently = pytest.importorskip(
     "evidently", reason="evidently is only installed in monitoring-env"
 )
 
+
 @pytest.mark.integration
 def test_generate_report_for_bottle_creates_html():
     output_path = generate_report_for_category("bottle")

@@ -30,3 +30,21 @@ Or manually:
 Note: build_reference.py and log_prediction.py run fine in the main
 environment (anomaly-env) since they don't depend on evidently --
 only generate_report.py requires the isolated environment.
+
+## Validated Drift Detection Experiment
+
+To confirm the monitoring pipeline detects real distributional shifts
+(not just running without error), a controlled degradation experiment
+was performed:
+
+1. 20 bottle test images were darkened to 40% brightness and blurred
+   (Gaussian blur, radius=3) via src/monitoring/simulate_drift.py
+2. These degraded images were sent through /predict
+3. A fresh drift report was generated and compared against baseline
+
+Result: `image_mean_brightness`, `image_sharpness`, and `anomaly_score`
+were all correctly flagged as drifted, confirming:
+- Input-statistic monitoring detects systemic image quality shifts
+  (e.g. camera/lighting degradation), as designed
+- The model's own anomaly scoring is also sensitive to degraded
+  image quality, providing an independent corroborating signal

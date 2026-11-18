@@ -49,6 +49,7 @@ results/*
 !results/monitoring/
 !results/monitoring/*.csv
 results/monitoring/predictions_log.csv
+results/monitoring/simulated_drift/
 
 monitoring-env/
 results/monitoring/reports/

@@ -49,3 +49,6 @@ results/*
 !results/monitoring/
 !results/monitoring/*.csv
 results/monitoring/predictions_log.csv
+
+monitoring-env/
+results/monitoring/reports/

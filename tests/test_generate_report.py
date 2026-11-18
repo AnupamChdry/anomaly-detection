@@ -18,12 +18,13 @@ SKIPPED automatically via pytest.importorskip. To actually run it:
 """
 
 import pytest
+from src.monitoring.generate_report import generate_report_for_category
+
 
 evidently = pytest.importorskip(
     "evidently", reason="evidently is only installed in monitoring-env"
 )
 
-from src.monitoring.generate_report import generate_report_for_category
 
 
 @pytest.mark.integration

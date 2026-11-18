@@ -1,22 +1,27 @@
-## Week 6 — Cloud Deployment & CI/CD Automation (GCP Cloud Run)
+## Week 7 — Model & Data Monitoring (Evidently AI)
 
 ### Overview
 
-Week 6 extended the CI pipeline built in Week 5 (Docker image build + push to GitHub Container Registry) into a full **continuous deployment (CD)** pipeline: every merge to `main` automatically builds, scans, and deploys the latest model-serving container to **Google Cloud Run**, with zero manual cloud commands required.
-
-The deployment uses **Workload Identity Federation (WIF)** for authentication — meaning no long-lived GCP service account key is ever stored as a GitHub secret. This was a deliberate security choice, informed directly by an earlier incident in this project (Week 2) where a DagsHub access token was accidentally committed and had to be rotated.
-
----
+With the model deployed and serving predictions (Week 6), Week 7 adds
+**drift monitoring** — tracking whether incoming production data and
+model behavior remain statistically consistent with the training
+distribution over time. This is a critical capability for maintaining
+trust in a deployed model: a model doesn't become "wrong" on its own,
+but the world around it can shift (lighting conditions, camera
+hardware, product variations) in ways that silently degrade prediction
+reliability.
 
 ### Architecture
 
 ```mermaid
-flowchart LR
-    A[Developer merges PR<br/>develop → main] --> B[GitHub Actions triggered]
-    B --> C[DVC pull model checkpoints<br/>from DagsHub remote]
-    C --> D[Docker build<br/>CPU-only PyTorch image]
-    D --> E[Push image to GHCR]
-    E --> F[Trivy vulnerability scan]
-    F --> G[Authenticate to GCP<br/>via Workload Identity Federation]
-    G --> H[gcloud run deploy]
-    H --> I[New revision live on Cloud Run]
+flowchart TD
+    A["/predict API call"] --> B["Run inference<br/>(PatchCore)"]
+    B --> C["Log prediction to<br/>predictions_log.csv"]
+    C --> D["Return response<br/>(unchanged)"]
+
+    E["Training data<br/>(data/raw/category/train/good)"] --> F["build_reference.py<br/>(run once per model version)"]
+    F --> G["reference_category.csv"]
+
+    G --> H["generate_report.py<br/>(on-demand, isolated venv)"]
+    C --> H
+    H --> I["Timestamped Evidently<br/>HTML drift report"]

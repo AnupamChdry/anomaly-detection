@@ -9,7 +9,7 @@ from src.inference.predict import load_model, predict
 
 MODEL_VERSION = os.getenv("MODEL_VERSION", "v1")
 
-app = FastAPI(title="Anomaly Detection API")
+app = FastAPI(title="Anomaly Detection")
 
 VALID_CATEGORIES = {"bottle", "screw", "cable"}
 
